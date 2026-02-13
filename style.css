@@ -1,0 +1,897 @@
+html, body {
+    width:  100%;
+    height: 100%;
+    margin: 0;
+}
+html {
+    background: linear-gradient(180deg, #fff6ec 0%, #ffe9d0 35%, #ffd8b3 100%);
+    background-attachment: fixed;
+}
+/* Load the font PressStart2P-Regular.ttf */
+@font-face {
+    font-family: 'Press Start 2P';
+    src: url('fonts/PressStart2P-Regular.ttf');
+}
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #fff6ec 0%, #ffe9d0 35%, #ffd8b3 100%);
+    background-attachment: fixed;
+    color: #5a3d20;
+    min-height: 100vh;
+}
+.pagetitle {
+    padding: 10px;
+    padding-bottom: 0px;
+    font-size: 0.75em;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+a {color: rgb(255, 0, 255);text-decoration: none;}
+a:hover {color: rgb(255, 121, 255);}
+a:active, a:hover:active {color: rgb(255, 179, 255);}
+#gameDiv { /*game canvas*/
+    border: 3px solid #d4860f;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, -0%);
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+    margin-top: 20px;
+    background-color: #1a1a1a;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+#bottomInfoBox { /* place under the game canvas */
+    margin: 1.5em 50px 0px 50px;
+    font-family: Arial, sans-serif;
+}
+#bottomLeftBox {
+    float: left;
+    width: 50%;
+    text-align: left;
+}
+#bottomRightBox {
+    float: right;
+    width: 50%;
+    text-align: right;
+}
+table {
+    border-collapse: collapse;
+    width: 75%;
+    background-color: rgba(255, 255, 255, 0.125);
+    margin-left: auto;
+    margin-right: 0px;
+}
+/* alternating table row colors */
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.0625);
+}
+th, td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #9f9f9f;
+}
+kbd {
+    /* Look like a button */
+    display: inline-block;
+    padding: 0.2em 0.6em 0.3em;
+    font-size: 90%;
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+    background-color: rgb(95, 95, 95);
+    border-radius: 0.2em;
+    border: 1px solid #000;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 0 2px rgba(0, 0, 0, 0.05);
+    font-family: Arial, sans-serif;
+}
+#infoParent, #modParent, #settingsParent, .menuParent {
+    display: none;
+}
+#infoScreen, #modManager, #settingsMenu, .menuScreen {
+    position: absolute;
+    border: 3px solid #d4860f;
+    left: 50%;
+    top: 5%;
+    transform: translate(-50%, 0%);
+    width: 95%;
+    height: 55%;
+    max-width: 720px;
+    padding: 20px 24px;
+    background: linear-gradient(180deg, #fff8f0 0%, #ffe8d0 100%);
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25), 0 2px 8px rgba(212,134,15,0.2);
+    color: #4a3520;
+    scrollbar-color: #d4860f rgba(255,200,130,0.3);
+    scrollbar-width: thin;
+}
+#infoScreen::-webkit-scrollbar, #modManager::-webkit-scrollbar, #settingsMenu::-webkit-scrollbar {
+    width: 10px;
+}
+#infoScreen::-webkit-scrollbar-track, #modManager::-webkit-scrollbar-track, #settingsMenu::-webkit-scrollbar-track {
+    background: rgba(255,200,130,0.3);
+    border-radius: 8px;
+}
+#infoScreen::-webkit-scrollbar-thumb, #modManager::-webkit-scrollbar-thumb, #settingsMenu::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #f5a623 0%, #d4860f 100%);
+    border-radius: 8px;
+    border: 2px solid rgba(255,248,240,0.5);
+}
+#infoScreen::-webkit-scrollbar-thumb:hover, #modManager::-webkit-scrollbar-thumb:hover, #settingsMenu::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ffb840 0%, #e69500 100%);
+}
+#infoSearch, #modManagerUrl {
+    position: absolute;
+    top: calc(5% + 55% - 56px);
+    width: calc(95% - 48px);
+    max-width: 672px;
+    height: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, #fff8f0 0%, #ffe8d0 100%);
+    color: #4a3520;
+    font-size: 1.1em;
+    padding: 6px 12px;
+    font-family: Arial, sans-serif;
+    border: 3px solid #d4860f;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+#infoSearch:focus, #modManagerUrl:focus {
+    outline: none;
+    border-color: #ff9800;
+    box-shadow: 0 4px 16px rgba(255,152,0,0.3);
+}
+#infoSearch::placeholder {
+    color: #a08060;
+}
+.menuTitle {
+    font-size: 1.6em;
+    font-weight: 700;
+    color: #d4860f;
+    text-decoration: none;
+    border-bottom: 3px solid #d4860f;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    display: inline-block;
+}
+.menuText {
+    margin-top: 10px;
+    line-height: 1.7em;
+    color: #5a4030;
+}
+#infoText {
+    white-space: pre-line;
+    font-size: 0.95em;
+    line-height: 2.2em;
+    padding: 8px 0;
+}
+.XButton {
+    position: absolute;
+    right: -3px;
+    top: -3px;
+    font-size: 1.5em;
+    background: linear-gradient(180deg, #ff6b6b 0%, #e04545 100%);
+    color: #ffffff;
+    padding: 8px 14px;
+    text-align: center;
+    border: 3px solid #c03030;
+    border-radius: 0 14px 0 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 2px 8px rgba(200,50,50,0.3);
+}
+.XButton:hover {
+    background: linear-gradient(180deg, #ff8080 0%, #f05555 100%);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(200,50,50,0.4);
+}
+/*#modManagerAdd {
+    position: absolute;
+    bottom: 25%;
+    right: 25%;
+    height: 50px;
+    width: 50px;
+    transform: translate(-25%, -25%);
+    background-color: rgb(0, 190, 32);
+    color: white;
+    font-size: 2em;
+    padding: 10px;
+    font-family: 'Press Start 2P';
+}*/
+#modManagerList {
+    margin-top: 20px;
+    padding-left: 0;
+}
+#modManagerList li {
+    list-style-type: none;
+    position: relative;
+    padding: 8px 12px;
+    margin: 6px 0;
+    background: rgba(255,200,130,0.3);
+    border-radius: 8px;
+    border-left: 4px solid #d4860f;
+}
+#modManagerList li::before {
+    content: '•';
+    position: absolute;
+    left: -1.2em;
+    font-size: 1em;
+    font-family: Arial, sans-serif;
+    color: #d4860f;
+    display: none;
+}
+.removeModX {
+    color: #e04545;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+.removeModX:hover {
+    color: #ffffff;
+    background: #e04545;
+}
+.infoLink {
+    display: inline-block;
+    padding: 10px 16px;
+    margin: 4px 0;
+    background: rgba(255,200,130,0.25);
+    border-radius: 10px;
+    border-left: 4px solid #d4860f;
+    color: #5a4030;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95em;
+    transition: all 0.15s ease;
+}
+.infoLink:hover {
+    background: rgba(255,200,130,0.4);
+    border-left-color: #ff9800;
+    color: #d4860f;
+}
+/* Inline links separator styling */
+#infoText .infoLink + .infoLink {
+    margin-left: 6px;
+}
+/* Links inside menu screens */
+#infoScreen a, #modManager a, #settingsMenu a, .menuScreen a {
+    color: #d4860f;
+    text-decoration: underline;
+    font-weight: 600;
+    transition: color 0.15s ease;
+}
+#infoScreen a:hover, #modManager a:hover, #settingsMenu a:hover, .menuScreen a:hover {
+    color: #ff9800;
+}
+button, input[type="submit"], input[type="reset"] {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+}
+.usingTab button:focus {
+    filter: brightness(75%);
+    outline: none;
+}
+#underBox {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, -0%);
+    margin-top: 10px;
+    width: 100%;
+}
+#controls button {
+    padding: 10px 15px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #ffc857 0%, #f0a830 100%);
+    color: #5a3d20;
+    font-weight: bold;
+    border: 2px solid #d4860f;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#controls button:hover {
+    background: linear-gradient(180deg, #ffd470 0%, #f5b840 100%);
+    transform: translateY(-2px);
+}
+
+#controls button:active {
+    transform: translateY(0);
+}
+
+/* Home Screen Styles */
+#homeScreen {
+    position: fixed;
+    inset: 0;
+    min-height: 100vh;
+    height: 100vh;
+    background: linear-gradient(180deg, #fff6ec 0%, #ffe9d0 35%, #ffd8b3 100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+/* Card */
+.homeContainer {
+    position: relative;
+    background: linear-gradient(180deg,#ffffff 0%, #fffefc 100%);
+    border-radius: 28px;
+    padding: 56px 72px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.14);
+    text-align: center;
+    max-width: 820px;
+    width: 86%;
+    overflow: hidden;
+}
+
+/* Title */
+.homeTitle {
+    font-family: 'Montserrat', 'Arial', sans-serif;
+    font-size: 56px;
+    font-weight: 800;
+    color: #ff7000;
+    margin: 0 0 28px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    letter-spacing: 0.6px;
+}
+.homeTitle .fireEmoji {
+    font-size: 1.5em;
+    transform: translateY(2px);
+}
+
+/* Logo */
+.homeLogo {
+    max-width: 100%;
+    width: 550px;
+    height: auto;
+    margin-bottom: 28px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Buttons */
+.homeButton {
+    display: block;
+    width: 72%;
+    max-width: 520px;
+    margin: 14px auto;
+    padding: 16px 28px;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #3b2a14;
+    background: linear-gradient(90deg, #ffb454 0%, #ffd46e 100%);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform .16s ease, box-shadow .16s ease;
+    box-shadow: 0 12px 30px rgba(255,160,56,0.24);
+}
+.homeButton:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 36px rgba(255,160,56,0.28);
+}
+.homeButton:active {
+    transform: translateY(-2px);
+}
+
+/* Subtitle */
+.homeSubtitle {
+    font-family: 'Open Sans', Arial, sans-serif;
+    font-size: 16px;
+    color: #6b6b6b;
+    margin-top: 26px;
+}
+
+/* Responsive tweaks */
+@media screen and (max-width: 480px) {
+    .homeContainer { padding: 28px 24px; }
+    .homeTitle { font-size: 32px; }
+    .homeLogo { width: 320px; margin-bottom: 20px; }
+    .homeButton { width: 86%; font-size: 16px; }
+}
+
+#controls button.bright {
+    text-shadow: 0.5px 1px 4px #ffffff;
+    color: rgba(0, 0, 0, 0.75);   
+}
+/*Darken when active*/
+#controls button:active, #controls button:active:hover {
+    filter: brightness(60%);
+}
+#controls button:hover {
+    filter: brightness(90%);
+}
+#controls button:disabled {
+    cursor: not-allowed;
+}
+#controls button[current="true"], #controls button[on="true"] {
+    border: 1px solid #ffffff;
+    filter: brightness(110%);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, .4);
+    color: rgba(255, 255, 255, 1);
+}
+#controls button.bright[current="true"] {
+    color: rgba(0, 0, 0, 1);
+}
+#controls button[on="true"] {
+    border-color:lime;
+    color:lime;
+}
+#controls div {
+    display:block;
+}
+.stat {
+    margin-right: 25px;
+    margin-bottom: 5px;
+    float:right;
+}
+#stats {
+    margin: 0px 5px 0px 5px;
+    font-size: 0.75em;
+    height: 1.5em;
+    width:100%;
+}
+/* screen size < 800px */
+@media screen and (max-width: 800px) { /* Mobile Styles */
+    .pagetitle {
+        font-size: 1em;
+        padding-left: 0.25em;
+    }
+    #bottomLeftBox, #bottomRightBox {
+        width: 100%;
+        margin: 1px;
+        text-align: left;
+    }
+    table {
+        width: 100%;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+}
+/* screen size > 1325px, h1::after {content:" Sandboxels"} */
+@media screen and (min-width: 1325px) {
+    .pagetitle::after {content:""}
+}
+#stat-pos, #stat-pixels, #stat-shift, #stat-tps, #stat-ticks, #stat-view {
+    float:left;
+}
+.categoryName {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+#extraInfo {
+    margin:5px
+}
+#toolControls, #category-tools {
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+}
+
+/* Scrollbars */
+
+#toolControls, #category-tools, #categoryControls, #elementControls {
+    scrollbar-color: rgba(255, 255, 255, 0.25) rgba(255, 255, 255, 0.1);
+    scrollbar-width: thin;
+}
+
+@media screen and (max-width: 700px) {
+    #toolControls, #category-tools, #categoryControls, #elementControls {
+    margin-bottom: 5px !important;
+    }
+}
+
+#toolControls::-webkit-scrollbar, #category-tools::-webkit-scrollbar, #categoryControls::-webkit-scrollbar, #elementControls::-webkit-scrollbar {
+    width: 5px;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+#toolControls::-webkit-scrollbar-thumb, #category-tools::-webkit-scrollbar-thumb, #categoryControls::-webkit-scrollbar-thumb, #elementControls::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 5px;
+}
+#toolControls::-webkit-scrollbar-track, #category-tools::-webkit-scrollbar-track, #categoryControls::-webkit-scrollbar-track, #elementControls::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+}
+#toolControls::-webkit-scrollbar-thumb:hover, #category-tools::-webkit-scrollbar-thumb:hover, #categoryControls::-webkit-scrollbar-thumb:hover, #elementControls::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+#toolControls {
+    z-index: 3;
+}
+#category-tools {
+    z-index: 2;
+    background-color: rgba(255, 200, 130, 0.35) !important;
+    border-radius: 10px !important;
+    padding: 6px 8px !important;
+    padding-right: 14px !important;
+    margin-bottom: 8px !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.06) !important;
+    box-sizing: border-box !important;
+}
+
+#categoryControls {
+    margin-bottom: 5px;
+    background-color: rgba(255, 255, 255, 0.125);
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    padding-bottom:1px;
+}
+#categoryControls button {
+    /* Borderless buttons */
+    border: none;
+    border-radius: 0;
+    padding-right: 8px;
+    margin: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display: inline-block;
+    position: relative;
+    z-index:0;
+}
+#categoryControls button:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
+}
+#categoryControls button[current="true"] {
+    border: none;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+.category {
+    margin-top:0.75em;
+    position:relative;
+    display:flex;
+    flex-direction: column;
+    flex-wrap:wrap;
+    text-align:center;
+}
+button, input { /*Disable double tap zoom on mobile devices*/
+    touch-action: manipulation;
+}
+select {
+    background: linear-gradient(180deg, #f5a623 0%, #e69500 100%);
+    vertical-align: middle;
+    margin-left: 8px;
+    margin-right: 5px;
+    border: 2px solid #cc8000;
+    border-radius: 8px;
+    padding: 0.5em 1em;
+    color: #4a2800;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    transition: all 0.15s ease;
+}
+select:hover {
+    background: linear-gradient(180deg, #ffb840 0%, #f0a520 100%);
+    box-shadow: 0 3px 10px rgba(230,140,0,0.25);
+}
+select:focus {
+    outline: none;
+    border-color: #ff9800;
+    box-shadow: 0 0 0 3px rgba(255,152,0,0.25);
+}
+input[type="color"] {
+    width: 50px;
+    height: 36px;
+    border: 2px solid #cc8000;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 2px;
+    background: #fff8f0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    transition: all 0.15s ease;
+}
+input[type="color"]:hover {
+    border-color: #ff9800;
+    box-shadow: 0 3px 10px rgba(230,140,0,0.25);
+    transform: scale(1.05);
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 2px;
+}
+input[type="color"]::-webkit-color-swatch {
+    border-radius: 4px;
+    border: none;
+}
+.settingsButton {
+    background: linear-gradient(180deg, #f5a623 0%, #e69500 100%);
+    vertical-align: middle;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: 2px solid #cc8000;
+    border-radius: 8px;
+    padding: 0.5em 1em;
+    color: #4a2800;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    transition: all 0.15s ease;
+}
+.settingsButton:hover {
+    background: linear-gradient(180deg, #ffb840 0%, #f0a520 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(230,140,0,0.25);
+}
+#homeButton {
+    background: linear-gradient(90deg, #ffb454 0%, #ffd46e 100%);
+    color: #3b2a14;
+    border: 2px solid #d4860f;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(255,160,56,0.2);
+}
+#homeButton:hover {
+    background: linear-gradient(90deg, #ffc870 0%, #ffe080 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255,160,56,0.3);
+}
+#canvasDiv {
+    position:relative;
+    overflow-x:hidden
+}
+#colorSelector {
+    position:absolute;
+    bottom:1em;
+    right:1em;
+    display: none;
+}
+.categoryButton.notify {
+    background-color: rgba(255, 0, 0, 0.25);
+}
+/* .elementButton.notify with a red glow */
+.elementButton.notify {
+    -webkit-box-shadow: 0px 0px 15px 5px #FF0000; 
+    box-shadow: 0px 0px 15px 5px #FF0000;
+}
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+}
+.setting-span {
+    display: block;
+    padding: 12px 16px;
+    margin: 8px 0;
+    background: rgba(255,200,130,0.25);
+    border-radius: 10px;
+    border-left: 4px solid #d4860f;
+    font-size: 0.95em;
+    color: #5a4030;
+    transition: all 0.15s ease;
+}
+.setting-span:hover {
+    background: rgba(255,200,130,0.4);
+    border-left-color: #ff9800;
+}
+/* Game Theme Button Styling */
+.categoryButton, .elementButton {
+    font-size: 0.85em !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4) !important;
+    border: 2px solid rgba(0,0,0,0.25) !important;
+    margin: 3px 4px !important;
+    font-variant: small-caps !important;
+    padding: 6px 12px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.15s ease !important;
+    cursor: pointer !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 4px rgba(0,0,0,0.15) !important;
+}
+
+/* Category tabs - warm orange style */
+.categoryButton {
+    background: linear-gradient(180deg, #f5a623 0%, #e69500 100%) !important;
+    color: #4a2800 !important;
+    border-color: #cc8000 !important;
+}
+
+.categoryButton:hover {
+    background: linear-gradient(180deg, #ffb840 0%, #f0a520 100%) !important;
+    color: #3a1800 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 4px 10px rgba(230,140,0,0.3) !important;
+}
+
+.elementButton:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 4px 8px rgba(0,0,0,0.25) !important;
+    filter: brightness(1.08);
+}
+
+.categoryButton[current="true"] {
+    background: linear-gradient(180deg, #ff8c00 0%, #d97700 100%) !important;
+    color: #ffffff !important;
+    border-color: #b06000 !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 3px 10px rgba(255,140,0,0.45) !important;
+}
+
+.elementButton[current="true"] {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.6), 0 2px 6px rgba(0,0,0,0.2) !important;
+}
+
+#categoryControls {
+    background-color: rgba(255, 200, 130, 0.35) !important;
+    border-radius: 10px !important;
+    padding: 6px 8px !important;
+    padding-right: 14px !important;
+    margin-bottom: 8px !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.08) !important;
+    box-sizing: border-box !important;
+}
+
+#elementControls {
+    background-color: rgba(255, 190, 120, 0.3) !important;
+    border-radius: 10px !important;
+    padding: 10px !important;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.08) !important;
+}
+
+/* Elements panel (dark rounded rectangle) */
+#elementsPanel {
+    background: linear-gradient(180deg,#5a4b40 0%, #4b3b31 100%);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-top: 14px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+    width: calc(100% - 40px);
+}
+.elementsHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+.elementsTitle {
+    background: linear-gradient(180deg,#ffb454 0%, #ffd46e 100%);
+    color: #3b2a14;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 800;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.18);
+    display: none !important;
+}
+.elementsTabs { display:flex; gap:8px; margin-left: 6px; }
+
+/* Tab styling: refined dark pills for categories */
+#categoryControls .categoryButton {
+    background: linear-gradient(180deg, #4a4038 0%, #3a3028 100%) !important;
+    color: #c8b8a8 !important;
+    border-color: rgba(0,0,0,0.35) !important;
+    padding: 5px 10px !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    font-size: 0.8em !important;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 1px 3px rgba(0,0,0,0.2) !important;
+}
+#categoryControls .categoryButton:hover {
+    background: linear-gradient(180deg, #5a5048 0%, #4a4038 100%) !important;
+    color: #ffffff !important;
+}
+#categoryControls .categoryButton[current="true"] {
+    background: linear-gradient(180deg, #ffb020 0%, #e09000 100%) !important;
+    color: #2a1a00 !important;
+    border-color: #b07000 !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 3px 10px rgba(230,140,0,0.4) !important;
+}
+
+#elementControls {
+    padding: 8px 6px !important;
+    display:flex !important;
+    flex-wrap:wrap !important;
+    gap: 8px !important;
+    align-items: flex-start;
+}
+
+/* Hide specific control buttons visually while keeping functionality in code */
+#elemSelectButton,
+#modsButton,
+#elementButton-paint,
+#elementButton-unpaint,
+#elementButton-lookup {
+    display: none !important;
+}
+
+/* Make element buttons refined pill-shaped */
+.categoryButton, .elementButton {
+    border-radius: 8px !important;
+    padding: 5px 10px !important;
+    font-size: 0.82em !important;
+}
+
+/* (Per-element colors now come from the game logic; no gradients here) */
+
+#toolControls {
+    background-color: rgba(255, 200, 130, 0.35) !important;
+    border-radius: 10px !important;
+    padding: 6px 8px !important;
+    margin-bottom: 10px !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.06) !important;
+}
+
+#toolControls button {
+    background: linear-gradient(180deg, #f5a623 0%, #e69500 100%) !important;
+    color: #4a2800 !important;
+    border: 2px solid #cc8000 !important;
+    border-radius: 6px !important;
+    padding: 6px 12px !important;
+    margin: 2px 3px !important;
+    font-weight: 600 !important;
+    font-size: 0.85em !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 2px 4px rgba(0,0,0,0.12) !important;
+}
+
+#toolControls button:hover {
+    background: linear-gradient(180deg, #ffb840 0%, #f0a520 100%) !important;
+    color: #3a1800 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 4px 10px rgba(230,140,0,0.25) !important;
+}
+
+#toolControls button[on="true"] {
+    background: linear-gradient(180deg, #ff8c00 0%, #d97700 100%) !important;
+    color: #ffffff !important;
+    border-color: #b06000 !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 10px rgba(255,140,0,0.4) !important;
+}
+
+#stats {
+    color: #5a3d20 !important;
+    font-size: 0.8em !important;
+    text-shadow: 0.5px 1px 2px rgba(255, 255, 255, 0.5) !important;
+}
+
+#gameWrapper {
+    background-color: transparent;
+}
+
+#underDiv {
+    background: linear-gradient(180deg, rgba(255,220,180,0.85) 0%, rgba(255,200,150,0.9) 100%);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-top: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.5);
+    border: 2px solid rgba(212,134,15,0.3);
+}
+
+#canvasDiv canvas {
+    background-color: #1a1a1a;
+}

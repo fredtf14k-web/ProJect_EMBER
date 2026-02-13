@@ -1,0 +1,39 @@
+{
+  "name": "Project EMBER",
+  "short_name": "EMBER",
+  "theme_color": "#ff7000",
+  "background_color": "#fff6ec",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "https://sandboxels.r74n.com",
+  "description": "Elemental Matter Behavior and Reaction - A falling sand simulation",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icons/ember-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/android-chrome-192x192.png?v=2",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+        "src": "icons/android-chrome-384x384.png?v=2",
+        "sizes": "384x384",
+        "type": "image/png"
+    },
+    {
+        "src": "icons/apple-touch-icon.png?v=2",
+        "sizes": "180x180",
+        "type": "image/png"
+    },
+    {
+        "src": "icons/apple-touch-icon-144x144.png?v=2",
+        "sizes": "144x144",
+        "type": "image/png"
+    }
+  ]
+}
