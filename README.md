@@ -1,9 +1,3 @@
-# Sandboxels
-A falling sand simulation game.
-
-Play at [Sandboxels.R74n.com](https://sandboxels.r74n.com/).
-
-Join the [Discord server](https://discord.com/invite/ejUc6YPQuS).
 
 # Controls
  * Left Click = Draw pixels
